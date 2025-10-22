@@ -232,13 +232,24 @@
                 width: 90px;
                 margin-right: 5px;
             } 
+            .oc {
+                width: 100%;
+                height: 100%;
+            }
             .option {
                 display: inline-block;
-                border: black;
-                border-width: 2px;
+                border: 2px solid black;
                 width: 20px;
                 height: 20px;
                 margin: 2px;
+                background-color: white;
+                background-image:
+                linear-gradient(45deg, #ccc 25%, transparent 25%),
+                    linear-gradient(-45deg, #ccc 25%, transparent 25%),
+                    linear-gradient(45deg, transparent 75%, #ccc 75%),
+                    linear-gradient(-45deg, transparent 75%, #ccc 75%);
+                background-size: 20px 20px;
+                background-position: 0 0, 0 10px, 10px -10px, -10px 0;
             }
             `;
             const cr = document.createElement('div')
@@ -251,7 +262,10 @@
             for(const c of colors) {
                 const col = document.createElement("div"); 
                 col.classList.add("option");
-                col.style.backgroundColor = c;
+                const color = document.createElement("div");
+                color.classList.add("oc")
+                col.appendChild(color)
+                color.style.backgroundColor = c;
                 col.addEventListener("mousedown", () => {
                     this.value = c;
                 })
