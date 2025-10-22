@@ -234,6 +234,8 @@
             } 
             .option {
                 display: inline-block;
+                border: black;
+                border-width: 2px;
                 width: 20px;
                 height: 20px;
                 margin: 2px;
