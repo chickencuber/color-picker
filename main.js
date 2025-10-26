@@ -128,7 +128,17 @@
             })
             this.save.addEventListener("mousedown", () => {
                 colors.push(this.value);
-                this.blur();
+                const col = document.createElement("div"); 
+                col.classList.add("option");
+                const color = document.createElement("div");
+                color.classList.add("oc")
+                col.appendChild(color)
+                color.style.backgroundColor = this.value;
+                const c = this.value;
+                col.addEventListener("mousedown", () => {
+                    this.value = c;
+                })
+                this.swatches.appendChild(col)
             })
             this.addEventListener("focusout", () => this.remove());
             if(!this.value) this.value = "#000000"
@@ -167,6 +177,10 @@
                 box-sizing: border-box;
             }
                 .slider-wrapper {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0;
                     position: relative;
                     height: 16px; /* match slider height */
                         border-radius: 5px;
@@ -181,11 +195,15 @@
                 }
 
             input[type="range"] {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
                 margin-left: 10px;
                 margin-right: 7px;
                 flex: 1;
                 -webkit-appearance: none;
-                height: 16px;
+                -moz-appearance: none;
                 border-radius: 5px;
                 background: transparent;
                 outline: none;
@@ -195,6 +213,9 @@
                 background: transparent;
                 height: 16px;
                 border-radius: 5px;
+                border: none;
+                background: transparent;
+                height: 100%;
             }
             input[type="range"]::-webkit-slider-thumb {
                 -webkit-appearance: none;
@@ -205,10 +226,10 @@
                 background: #00f;
                 cursor: pointer;
                 border: 2px solid #000;
-                margin-top: -4px; /* center thumb on track */
             }
 
             input[type="range"]::-moz-range-thumb {
+                box-sizing: border-box;
                 width: 16px;
                 height: 16px;
                 border-radius: 50%;
@@ -220,6 +241,8 @@
                 width: 100%;
                 height: 100%;
                 background: #ffffff;
+                display: flex;
+                flex-direction: column;
             }
             .c {
                 padding-top: 10px;
@@ -230,9 +253,12 @@
             }
             input[type=number]{
                 width: 90px;
+                height: 15px;
                 margin-right: 5px;
             } 
             .oc {
+                margin: 0;
+                padding: 0;
                 width: 100%;
                 height: 100%;
             }
@@ -240,8 +266,9 @@
                 display: inline-block;
                 border: 2px solid black;
                 width: 20px;
-                height: 20px;
+                padding: 0;
                 margin: 2px;
+                height: 20px;
                 background-color: white;
                 background-image:
                 linear-gradient(45deg, #ccc 25%, transparent 25%),
@@ -251,6 +278,13 @@
                 background-size: 20px 20px;
                 background-position: 0 0, 0 10px, 10px -10px, -10px 0;
             }
+            #swatch {
+                flex: 1;
+                overflow-y: scroll;
+            }
+            #save {
+                height: 21px;
+            }
             `;
             const cr = document.createElement('div')
             cr.classList.add("c") 
@@ -259,6 +293,7 @@
             this.rgb_picker = document.createElement("div");
 
             this.swatches = document.createElement("div");
+            this.swatches.id = "swatch"
             for(const c of colors) {
                 const col = document.createElement("div"); 
                 col.classList.add("option");
@@ -336,11 +371,12 @@
             this.rgb_picker.appendChild(ca);
 
             this.save = document.createElement("button");
+            this.save.id = "save"
             this.save.textContent = "Save";
             this.rgb_picker.appendChild(this.save)
 
             this.tabs = document.createElement("select");
-            this.tabs.innerHTML = "<option value='rgb'>rgb</option><option value='swatch'>swatch</option>"
+            this.tabs.innerHTML = "<option value='rgb'>rgb</option><option value='swatch'>swatches</option>"
             this.tabs.value = last;
             this.setTab();
             this.box.appendChild(this.tabs);
@@ -398,7 +434,7 @@
                 background-size: 20px 20px;
                 background-position: 0 0, 0 10px, 10px -10px, -10px 0;
             }
-            div {
+            div:not(#x) {
                 width: 100%;
                 height: 100%;
                 border: 2px solid black;
