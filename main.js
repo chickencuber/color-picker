@@ -37,6 +37,12 @@
     let last = "rgb"
 
     class ColorPickerMenu extends HTMLElement {
+        get allow_alpha() {
+            return this.getAttribute('allow_alpha');
+        }
+        set allow_alpha(val) {
+            this.setAttribute('allow_alpha', val);
+        }
         update() {
             let [r, g, b, a] = hexToRgba(this.value);
             this.r.value = r;
@@ -471,6 +477,12 @@
             this.dispatchEvent(new Event('change'));
         }
 
+        get allow_alpha() {
+            return this.getAttribute('allow_alpha');
+        }
+        set allow_alpha(val) {
+            this.setAttribute('allow_alpha', val);
+        }
         attributeChangedCallback(name, oldValue, newValue) {
             if (name === 'value') {
                 this.box.style.backgroundColor = newValue;
