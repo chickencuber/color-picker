@@ -369,7 +369,7 @@
             this.la.max = "255";
             this.a = document.createElement('input')
             if(this.allow_alpha === "no") {
-                a.style.display = "none"
+                this.a.style.display = "none"
             }
             this.a.type = "range"
             this.a.min = "0";
