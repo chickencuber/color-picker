@@ -362,6 +362,9 @@
             this.la.min = "0";
             this.la.max = "255";
             this.a = document.createElement('input')
+            if(this.allow_alpha === "no") {
+                a.style.display = "none"
+            }
             this.a.type = "range"
             this.a.min = "0";
             this.a.max = "255";
@@ -446,6 +449,7 @@
             this.addEventListener("mousedown", () => {
                 if(document.contains(this.menu)) return;
                 const c = document.createElement("color-picker-menu");
+                c.allow_alpha = this.allow_alpha;
                 c.value = this.value;
                 c.style.top = (this.getBoundingClientRect().top + this.getBoundingClientRect().height + 5) + "px";
                 c.style.left = this.getBoundingClientRect().left + "px";
