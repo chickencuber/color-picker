@@ -368,9 +368,6 @@
             this.la.min = "0";
             this.la.max = "255";
             this.a = document.createElement('input')
-            if(this.allow_alpha === "no") {
-                this.a.style.display = "none"
-            }
             this.a.type = "range"
             this.a.min = "0";
             this.a.max = "255";
@@ -393,7 +390,7 @@
             this.box.appendChild(this.swatches);
             this.shadowRoot.append(style, this.box);
         }
-        static get observedAttributes() { return ['value']; }
+        static get observedAttributes() { return ['value', 'allow_alpha']; }
 
         get value() {
             return this.getAttribute('value');
@@ -406,6 +403,14 @@
         attributeChangedCallback(name, oldValue, newValue) {
             if(name === "value") {
                 this.update();
+            } else if(name === "allow_alpha") {
+                if(this.allow_alpha === "no") {
+                    this.a.style.display = "none";
+                    this.la.style.display = "none";
+                } else {
+                    this.a.style.display = undefined;
+                    this.la.style.display = undefined;
+                }
             }
         }
     }
