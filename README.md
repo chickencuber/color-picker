@@ -1,6 +1,6 @@
-# color picker
-just include 
+# Chickens Elements
+just include the file, and write
 ```html 
-<color-picker></color-picker>
+<ce-color-picker></ce-color-picker>
 ```
 in your html, and use .value to get the color
