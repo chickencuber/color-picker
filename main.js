@@ -36,7 +36,7 @@
     const colors = [];
     let last = "rgb"
 
-    class ColorPickerMenu extends HTMLElement {
+    class ColorPickerInline extends HTMLElement {
         get allow_alpha() {
             return this.getAttribute('allow_alpha');
         }
@@ -413,7 +413,7 @@
         }
     }
 
-    customElements.define('ce-color-picker-inline', ColorPickerMenu)
+    customElements.define('ce-color-picker-inline', ColorPickerInline)
 
 
     class ColorPicker extends HTMLElement {
