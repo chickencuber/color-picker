@@ -84,6 +84,7 @@
 
         }
         connectedCallback() {
+            if(!this.value) this.value = "#000000"
             this.r.addEventListener("input", () => {
                 let [r, g, b, a] = hexToRgba(this.value);
                 r = this.r.value;
@@ -146,11 +147,9 @@
                 })
                 this.swatches.appendChild(col)
             })
-            this.addEventListener("focusout", () => this.remove());
             if(!this.value) this.value = "#000000"
             this.update();
             this.tabIndex = 0
-            requestAnimationFrame(() => this.focus());
         }
         setTab() {
             switch(this.tabs.value) {
@@ -176,7 +175,6 @@
             :host {
                 border: 4px solid #000;
                 border-radius: 10px;
-                position: absolute;
                 display: inline-block;
                 width: 250px;
                 height: 180px;
@@ -415,7 +413,7 @@
         }
     }
 
-    customElements.define('color-picker-menu', ColorPickerMenu)
+    customElements.define('ce-color-picker-inline', ColorPickerMenu)
 
 
     class ColorPicker extends HTMLElement {
@@ -459,13 +457,16 @@
             this.shadowRoot.append(c);
             this.addEventListener("mousedown", () => {
                 if(document.contains(this.menu)) return;
-                const c = document.createElement("color-picker-menu");
+                const c = document.createElement("ce-color-picker-inline");
                 c.allow_alpha = this.allow_alpha;
                 c.value = this.value;
                 c.style.top = (this.getBoundingClientRect().top + this.getBoundingClientRect().height + 5) + "px";
                 c.style.left = this.getBoundingClientRect().left + "px";
+                c.style.position = "absolute";
                 this.menu = c;
                 document.body.appendChild(c);
+                requestAnimationFrame(() => c.focus());
+                c.addEventListener("focusout", () => c.remove());
                 c.addEventListener("change", () => {
                     this.value = c.value;
                 })
@@ -495,5 +496,5 @@
         }
     }
 
-    customElements.define('color-picker', ColorPicker)
+    customElements.define('ce-color-picker', ColorPicker)
 })()
