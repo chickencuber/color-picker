@@ -3,13 +3,20 @@
     <head>
         <link rel="stylesheet" type="text/css" href="style.css">
         <meta charset="utf-8" />
-
+        <script src="chickens-elements.js"></script>
     </head>
     <body>
         <main>
-            <ce-color-picker id="picker" allow_alpha="no"></ce-color-picker>
+            <ce-color-picker id="picker"></ce-color-picker>
             <ce-color-picker-inline id="picker-inline"></ce-color-picker-inline>
-            <script src="main.js"></script>
+            <ce-select id="select">
+                <option value="hi">hi</option>
+                <ce-option value="wow">
+                    <div style="color:red">
+                       wow 
+                    </div>
+                </ce-option>
+            </ce-select>
         </main>
     </body>
 </html>

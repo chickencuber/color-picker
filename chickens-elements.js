@@ -37,25 +37,26 @@
     let last = "rgb"
 
     class ColorPickerInline extends HTMLElement {
-        get allow_alpha() {
-            return this.getAttribute('allow_alpha');
+        get block_alpha() {
+            return this.hasAttribute('block-alpha');
         }
-        set allow_alpha(val) {
-            this.setAttribute('allow_alpha', val);
+        set block_alpha(val) {
+            if(val) this.setAttribute('block-alpha', '');
+            else this.removeAttribute('block-alpha');
         }
         update() {
             let [r, g, b, a] = hexToRgba(this.value);
             this.r.value = r;
             this.lr.value = r;
             const rg = `
-                linear-gradient(to right, rgba(0, ${g}, ${b}, ${a/255}), rgba(255, ${g}, ${b}, ${a/255}))
+            linear-gradient(to right, rgba(0, ${g}, ${b}, ${a/255}), rgba(255, ${g}, ${b}, ${a/255}))
             `;
             this.r.style.backgroundColor = rg
             this.r.style.setProperty('--moz-track', rg);
             this.r.style.setProperty('background', rg)
 
             const gg = `
-                linear-gradient(to right, rgba(${r}, 0, ${b}, ${a/255}), rgba(${r}, 255, ${b}, ${a/255}))
+            linear-gradient(to right, rgba(${r}, 0, ${b}, ${a/255}), rgba(${r}, 255, ${b}, ${a/255}))
             `;
             this.g.value = g;
             this.lg.value = g;
@@ -65,7 +66,7 @@
 
 
             const bg = `
-                linear-gradient(to right, rgba(${r}, ${g}, 0, ${a/255}), rgba(${r}, ${g}, 255, ${a/255}))
+            linear-gradient(to right, rgba(${r}, ${g}, 0, ${a/255}), rgba(${r}, ${g}, 255, ${a/255}))
             `;
             this.b.value = b;
             this.lb.value = b;
@@ -74,7 +75,7 @@
             this.b.style.setProperty('background', bg)
 
             const ag = `
-                linear-gradient(to right, rgba(${r}, ${g}, ${b}, 0), rgba(${r}, ${g}, ${b}, 1))
+            linear-gradient(to right, rgba(${r}, ${g}, ${b}, 0), rgba(${r}, ${g}, ${b}, 1))
             `;
             this.a.value = a;
             this.la.value = a;
@@ -117,7 +118,7 @@
                 b = this.lb.value;
                 this.value = rgba_to_hex(r, g, b, a);
             })
-            
+
             this.a.addEventListener("input", () => {
                 let [r, g, b, a] = hexToRgba(this.value);
                 a = this.a.value;
@@ -149,7 +150,6 @@
             })
             if(!this.value) this.value = "#000000"
             this.update();
-            this.tabIndex = 0
         }
         setTab() {
             switch(this.tabs.value) {
@@ -172,14 +172,14 @@
             this.box.id = "background"
             const style = document.createElement('style');
             style.textContent = `
-            :host {
-                border: 4px solid #000;
-                border-radius: 10px;
-                display: inline-block;
-                width: 250px;
-                height: 180px;
-                box-sizing: border-box;
-            }
+                :host {
+                    border: 4px solid #000;
+                    border-radius: 10px;
+                    display: inline-block;
+                    width: 250px;
+                    height: 180px;
+                    box-sizing: border-box;
+                }
                 .slider-wrapper {
                     display: flex;
                     align-items: center;
@@ -248,40 +248,40 @@
                 display: flex;
                 flex-direction: column;
             }
-            .c {
-                padding-top: 10px;
-                display: flex;
-                flex-direction: row;
-                gap: 5px;
-                width: 100%;
-            }
+                .c {
+                    padding-top: 10px;
+                    display: flex;
+                    flex-direction: row;
+                    gap: 5px;
+                    width: 100%;
+                }
             input[type=number]{
                 width: 90px;
                 height: 15px;
                 margin-right: 5px;
             } 
-            .oc {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                height: 100%;
-            }
-            .option {
-                display: inline-block;
-                border: 2px solid black;
-                width: 20px;
-                padding: 0;
-                margin: 2px;
-                height: 20px;
-                background-color: white;
-                background-image:
-                linear-gradient(45deg, #ccc 25%, transparent 25%),
-                    linear-gradient(-45deg, #ccc 25%, transparent 25%),
-                    linear-gradient(45deg, transparent 75%, #ccc 75%),
-                    linear-gradient(-45deg, transparent 75%, #ccc 75%);
-                background-size: 20px 20px;
-                background-position: 0 0, 0 10px, 10px -10px, -10px 0;
-            }
+                .oc {
+                    margin: 0;
+                    padding: 0;
+                    width: 100%;
+                    height: 100%;
+                }
+                .option {
+                    display: inline-block;
+                    border: 2px solid black;
+                    width: 20px;
+                    padding: 0;
+                    margin: 2px;
+                    height: 20px;
+                    background-color: white;
+                    background-image:
+                    linear-gradient(45deg, #ccc 25%, transparent 25%),
+                        linear-gradient(-45deg, #ccc 25%, transparent 25%),
+                        linear-gradient(45deg, transparent 75%, #ccc 75%),
+                        linear-gradient(-45deg, transparent 75%, #ccc 75%);
+                    background-size: 20px 20px;
+                    background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+                }
             #swatch {
                 flex: 1;
                 overflow-y: scroll;
@@ -388,7 +388,7 @@
             this.box.appendChild(this.swatches);
             this.shadowRoot.append(style, this.box);
         }
-        static get observedAttributes() { return ['value', 'allow_alpha']; }
+        static get observedAttributes() { return ['value', 'block-alpha']; }
 
         get value() {
             return this.getAttribute('value');
@@ -401,8 +401,8 @@
         attributeChangedCallback(name, oldValue, newValue) {
             if(name === "value") {
                 this.update();
-            } else if(name === "allow_alpha") {
-                if(this.allow_alpha === "no") {
+            } else if(name === "block-alpha") {
+                if(this.block_alpha) {
                     this.a.style.display = "none";
                     this.la.style.display = "none";
                 } else {
@@ -429,11 +429,11 @@
             c.appendChild(this.box);
             const style = document.createElement('style');
             style.textContent = `
-            :host {
-                display: inline-block;
-                width: 50px;
-                height: 20px;
-            }
+                :host {
+                    display: inline-block;
+                    width: 50px;
+                    height: 20px;
+                }
             #x {
                 width: 100%;
                 height: 100%;
@@ -456,14 +456,13 @@
             this.shadowRoot.append(style);
             this.shadowRoot.append(c);
             this.addEventListener("mousedown", () => {
-                if(document.contains(this.menu)) return;
                 const c = document.createElement("ce-color-picker-inline");
-                c.allow_alpha = this.allow_alpha;
+                c.block_alpha = this.block_alpha;
                 c.value = this.value;
                 c.style.top = (this.getBoundingClientRect().top + this.getBoundingClientRect().height + 5) + "px";
                 c.style.left = this.getBoundingClientRect().left + "px";
                 c.style.position = "absolute";
-                this.menu = c;
+                c.tabIndex = 0
                 document.body.appendChild(c);
                 requestAnimationFrame(() => c.focus());
                 c.addEventListener("focusout", () => c.remove());
@@ -482,12 +481,12 @@
             this.setAttribute('value', val);
             this.dispatchEvent(new Event('change'));
         }
-
-        get allow_alpha() {
-            return this.getAttribute('allow_alpha');
+        get block_alpha() {
+            return this.hasAttribute('block-alpha');
         }
-        set allow_alpha(val) {
-            this.setAttribute('allow_alpha', val);
+        set block_alpha(val) {
+            if(val) this.setAttribute('block-alpha', '');
+            else this.removeAttribute('block-alpha');
         }
         attributeChangedCallback(name, oldValue, newValue) {
             if (name === 'value') {
@@ -497,4 +496,162 @@
     }
 
     customElements.define('ce-color-picker', ColorPicker)
+
+    class Option extends HTMLElement {
+        get value() {
+            return this.getAttribute('value') ?? this.textContent.trim();
+        }
+
+        set value(val) {
+            if (val == null) {
+                this.removeAttribute('value');
+            } else {
+                this.setAttribute('value', val);
+            }
+        }
+    }
+
+    customElements.define('ce-option', Option)
+
+    class Select extends HTMLElement {
+        constructor() {
+            super();
+            this._innerHTML = "";
+            this.attachShadow({ mode: 'open' });
+            this.box = document.createElement('div');
+            this.box.id = "box"
+            this.menu = document.createElement('div');
+            this.menu.style = `
+            position: absolute; 
+            display: flex;
+            flex-direction: column; 
+            align-items: flex-start;
+            justify-content: flex-start;
+            `;
+            const style = document.createElement('style');
+            style.textContent = `
+                :host {
+                    display: inline-flex;
+                    align-items: center;
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+                    font-size: 1rem;
+                    line-height: 1.2em;
+                    color: #000;
+                    background-color: #E9E9ED;
+                    border: 2px solid #000;
+                    border-radius: 4px;
+                    padding: 0.25em 0.5em;
+                    box-sizing: border-box;
+                    cursor: default;
+                }
+                :host(:focus) {
+                    outline: 1px auto Highlight;
+                    outline-offset: 2px;
+                }
+                #arrow {
+                    width: 0;
+                    height: 0;
+                    border-left: 5px solid transparent;
+                    border-right: 5px solid transparent;
+                    border-top: 5px solid black;
+                    margin-left: 5px;
+                    pointer-events: none;
+                }
+            `;
+            const arrow = document.createElement("div");
+            arrow.id="arrow"
+            this.shadowRoot.append(style);
+            this.shadowRoot.append(this.box);
+            this.shadowRoot.append(arrow)
+        }
+        update() {
+            this.menu.innerHTML = ""
+            const values = {};
+            this.querySelectorAll("option, ce-option").forEach(v => {
+                const b = document.createElement("button");
+                b.style=`
+                    min-width: 100%;
+                    box-sizing: border-box;
+                    border-radius: 0;
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+                    font-size: 1rem;
+                    line-height: 1.2em;
+                    color: #000;
+                    background-color: #white;
+                    border: 2px solid #000;
+                `;
+                b.addEventListener("mousedown", () => {
+                    this.value = v.value;
+                });
+                if(this.value === v.value) {
+                    b.style.background = "#3584E4"
+                    b.style.color="white";
+                }
+                if(v.tagName.toLowerCase() === "ce-option" || this.allow_html) {
+                    b.innerHTML=v.innerHTML;
+                    values[v.value] = g => g.innerHTML=b.innerHTML;
+                } else {
+                    b.textContent=v.textContent;
+                    values[v.value] = g => g.textContent=b.textContent;
+                }
+                this.menu.appendChild(b);
+            })
+            if(Object.keys(values).length > 0) {
+                const value = values[this.value]?this.value:Object.keys(values)[0];
+                if(this.value !== value) this.value = value;
+                values[value](this.box);
+            }
+        }
+        connectedCallback() {
+            this._observer = new MutationObserver(() => {
+                if(this._innerHTML !== this.innerHTML) {
+                    this._innerHTML = this.innerHTML;
+                    this.update();
+                }
+            });
+            this._observer.observe(this, {
+                subtree:true, 
+                childList: true,
+                attributes: true, 
+                characterData: true,
+            });
+            this.update();
+            this.addEventListener("mousedown", () => {
+                this.menu.style.top = (this.getBoundingClientRect().top + this.getBoundingClientRect().height + 5) + "px";
+                this.menu.style.left = this.getBoundingClientRect().left + "px";
+                this.menu.tabIndex=0;
+                this.menu.style.minWidth = this.getBoundingClientRect().width + "px";
+                document.body.appendChild(this.menu);
+                requestAnimationFrame(() => this.menu.focus());
+                this.menu.addEventListener("focusout", () => this.menu.remove());
+            })
+        }
+        disconnectedCallback() {
+            this._observer.disconnect();
+        }
+
+        static get observedAttributes() { return ['value']; }
+        get allow_html() {
+            return this.hasAttribute('allow-html');
+        }
+        set allow_html(val) {
+            if(val) this.setAttribute('allow-html', '');
+            else this.removeAttribute('allow-html');
+        }
+        get value() {
+            return this.getAttribute('value');
+        }
+
+        set value(val) {
+            this.setAttribute('value', val);
+            this.dispatchEvent(new Event('change'));
+        }
+        attributeChangedCallback(name, oldValue, newValue) {
+            if (name === 'value' || name === "allow-html") {
+                this.update();
+            }
+        }
+    }
+
+    customElements.define('ce-select', Select)
 })()
