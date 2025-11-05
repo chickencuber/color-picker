@@ -462,8 +462,9 @@
                 c.style.top = (this.getBoundingClientRect().top + this.getBoundingClientRect().height + 5) + "px";
                 c.style.left = this.getBoundingClientRect().left + "px";
                 c.style.position = "absolute";
+                c.style.zIndex = 999999;
                 c.tabIndex = 0
-                document.body.appendChild(c);
+                this.parentNode.appendChild(c);
                 requestAnimationFrame(() => c.focus());
                 c.addEventListener("focusout", () => c.remove());
                 c.addEventListener("change", () => {
@@ -621,7 +622,8 @@
                 this.menu.style.left = this.getBoundingClientRect().left + "px";
                 this.menu.tabIndex=0;
                 this.menu.style.minWidth = this.getBoundingClientRect().width + "px";
-                document.body.appendChild(this.menu);
+                this.menu.style.zIndex = 999999;
+                this.parentNode.appendChild(this.menu);
                 requestAnimationFrame(() => this.menu.focus());
                 this.menu.addEventListener("focusout", () => this.menu.remove());
             })
