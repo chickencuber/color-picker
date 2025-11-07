@@ -627,7 +627,11 @@
                 this.menu.style.zIndex = 999999;
                 this.parentNode.appendChild(this.menu);
                 requestAnimationFrame(() => this.menu.focus());
-                this.menu.addEventListener("focusout", () => this.menu.remove());
+                const c = () => {
+                    this.menu.remove()
+                    this.menu.removeEventListener("focusout", c)
+                }
+                this.menu.addEventListener("focusout", c);
             })
         }
         disconnectedCallback() {
