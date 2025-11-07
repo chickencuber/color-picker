@@ -461,7 +461,7 @@
                 c.value = this.value;
                 c.style.top = (this.getBoundingClientRect().top + this.getBoundingClientRect().height + 5) + "px";
                 c.style.left = this.getBoundingClientRect().left + "px";
-                c.style.position = "absolute";
+                c.style.position = "fixed";
                 c.style.zIndex = 999999;
                 c.tabIndex = 0
                 this.parentNode.appendChild(c);
@@ -523,7 +523,7 @@
             this.box.id = "box"
             this.menu = document.createElement('div');
             this.menu.style = `
-            position: absolute; 
+            position: fixed; 
             display: flex;
             flex-direction: column; 
             align-items: flex-start;
