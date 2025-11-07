@@ -532,6 +532,7 @@
             overflow-y: auto;
             `;
             const style = document.createElement('style');
+            this.menu.addEventListener("focusout", () => this.menu.remove())
             style.textContent = `
                 :host {
                     display: inline-flex;
@@ -620,18 +621,15 @@
             });
             this.update();
             this.addEventListener("mousedown", () => {
-                this.menu.style.top = (this.getBoundingClientRect().top + this.getBoundingClientRect().height + 5) + "px";
-                this.menu.style.left = this.getBoundingClientRect().left + "px";
-                this.menu.tabIndex=0;
-                this.menu.style.minWidth = this.getBoundingClientRect().width + "px";
-                this.menu.style.zIndex = 999999;
-                this.parentNode.appendChild(this.menu);
-                requestAnimationFrame(() => this.menu.focus());
-                const c = () => {
-                    this.menu.remove()
-                    this.menu.removeEventListener("focusout", c)
-                }
-                this.menu.addEventListener("focusout", c);
+                requestAnimationFrame(() => {
+                    this.menu.style.top = (this.getBoundingClientRect().top + this.getBoundingClientRect().height + 5) + "px";
+                    this.menu.style.left = this.getBoundingClientRect().left + "px";
+                    this.menu.tabIndex=0;
+                    this.menu.style.minWidth = this.getBoundingClientRect().width + "px";
+                    this.menu.style.zIndex = 999999;
+                    this.parentNode.appendChild(this.menu);
+                    requestAnimationFrame(() => this.menu.focus());
+                })
             })
         }
         disconnectedCallback() {
